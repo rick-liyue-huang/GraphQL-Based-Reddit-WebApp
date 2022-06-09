@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import HeaderComponent from "../components/Header";
+import PostBoxComponent from "../components/PostBox";
 
 const Home: NextPage = () => {
   return (
@@ -9,7 +10,12 @@ const Home: NextPage = () => {
       <Head>
         <title>GraphQL Reddit Clone</title>
       </Head>
-      <h1>hello</h1>
+    {/* post box */}
+      <PostBoxComponent />
+
+      <div>
+      {/* Feed */}
+      </div>
     </div>
   )
 }

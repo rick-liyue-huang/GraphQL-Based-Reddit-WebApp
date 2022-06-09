@@ -33,6 +33,10 @@ and then `stepzen start`
 notice: in the project development stage, needs to open three ports: 1. under main to run `npm run dev`, 2.under 'stepzen' to run `stepzen start` to open stepzen port, 3.used to install package
 
 
+create avatar in 'https://avatars.dicebear.com'
+
+the form will use 'react-hook-form' library
+
 
 
 
