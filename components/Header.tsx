@@ -10,9 +10,15 @@ import {
 	SpeakerphoneIcon,
 	VideoCameraIcon
 } from "@heroicons/react/outline";
+// connect with next-auth
+import {signIn, signOut, useSession} from "next-auth/react";
 
 
 const HeaderComponent = () => {
+
+	// will get the session after login
+	const {data: session} = useSession();
+
 	return (
 		<div
 			className={'flex bg-white px-4 py-2 shadow-sm sticky top-0'}>
@@ -27,7 +33,7 @@ const HeaderComponent = () => {
 			{/* Home Menu */}
 			<div
 				className={'flex items-center mx-7 xl:min-w-[300px]'}>
-				<HomeIcon className={'w-5 h-5'} />
+				<HomeIcon className={'w-5 h-5 text-green-600'} />
 				<p className={'flex-1 ml-2 hidden lg:inline'}>Home</p>
 				<ChevronDownIcon className={'w-5 h-5'} />
 			</div>
@@ -40,7 +46,7 @@ const HeaderComponent = () => {
 				<input className={'flex-1 bg-transparent outline-none'} type="text" placeholder={'Search content..'}/>
 				<button type={'submit'} hidden></button>
 			</form>
-
+			{/* Icons part */}
 			<div
 				className={'flex text-green-400 items-center space-x-2 hidden lg:inline-flex'}
 			>
@@ -57,6 +63,33 @@ const HeaderComponent = () => {
 			>
 				<MenuIcon className={'icon'} />
 			</div>
+
+		{/* Auth button part	*/}
+
+			{
+				session ? (
+					<div
+						className={'hidden items-center lg:flex space-x-2 p-2 cursor-pointer'}
+						onClick={() => signOut()}
+					>
+						<div className={'relative w-5 h-5 flex-shrink-0'}>
+							<Image src={'/images/redditFace.svg'} alt="login logo" layout={'fill'} objectFit={'contain'} />
+						</div>
+						<p className={'text-green-400'}>Logout</p>
+					</div>
+				) : (
+					<div
+						className={'hidden items-center lg:flex space-x-2 p-2 cursor-pointer'}
+						onClick={() => signIn()}
+					>
+						<div className={'relative w-5 h-5 flex-shrink-0'}>
+							<Image src={'/images/redditFace.svg'} alt="login logo" layout={'fill'} objectFit={'contain'} />
+						</div>
+						<p className={'text-green-400'}>Login</p>
+					</div>
+				)
+			}
+
 		</div>
 	);
 };
