@@ -9,7 +9,7 @@ const Home: NextPage = () => {
       <Head>
         <title>GraphQL Reddit Clone</title>
       </Head>
-      <HeaderComponent />
+      <h1>hello</h1>
     </div>
   )
 }

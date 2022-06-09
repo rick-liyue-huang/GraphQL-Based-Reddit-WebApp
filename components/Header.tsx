@@ -75,7 +75,11 @@ const HeaderComponent = () => {
 						<div className={'relative w-5 h-5 flex-shrink-0'}>
 							<Image src={'/images/redditFace.svg'} alt="login logo" layout={'fill'} objectFit={'contain'} />
 						</div>
-						<p className={'text-green-400'}>Logout</p>
+						<div className={'flex-1 text-xs'}>
+							<p className={'truncate text-green-500'}>{session.user?.name}</p>
+							<p className={'text-green-400'}>1 Karma</p>
+						</div>
+						<ChevronDownIcon className={'text-green-500 h-5 flex-shrink-0'} />
 					</div>
 				) : (
 					<div
