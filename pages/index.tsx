@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import HeaderComponent from "../components/Header";
 import PostBoxComponent from "../components/PostBox";
+import FeedComponent from "../components/Feed";
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
       <PostBoxComponent />
 
       <div className={'flex'}>
-      {/* Feed */}
+      <FeedComponent />
       </div>
     </div>
   )

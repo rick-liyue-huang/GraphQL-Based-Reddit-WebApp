@@ -31,6 +31,7 @@ const PostBoxComponent: React.FC = () => {
 	const onSubmit = handleSubmit(async (formData) => {
 		console.log(formData);
 
+
 		// use toaster, will display in _app.js <Toaster /> component
 		const notification = toast.loading('creating new post...');
 
@@ -43,7 +44,7 @@ const PostBoxComponent: React.FC = () => {
 				}
 			});
 
-			const subredditExisting = getSubredditListByTopic.length > 0;
+			const subredditExisting: boolean= getSubredditListByTopic?.length > 0;
 
 			if (!subredditExisting) {
 
@@ -108,6 +109,7 @@ const PostBoxComponent: React.FC = () => {
 		}
 
 	});
+
 
 	return (
 		<form onSubmit={onSubmit} className={'sticky z-10 bg-white border rounded-b-md border-gray-300 p-2'}>
