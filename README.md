@@ -38,6 +38,9 @@ create avatar in 'https://avatars.dicebear.com'
 the form will use 'react-hook-form' library
 
 
+using `npm install react-hot-toast` to display the toaster after 
+
+
 
 
 

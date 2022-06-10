@@ -80,11 +80,13 @@ type Query {
       table: "post"
       configuration: "postgresql_config"
     )
-  getSubredditList: [Subreddit]
+  getSubredditListByTopic(topic: String!): [Subreddit]
     @dbquery(
       type: "postgresql"
       schema: "public"
-      table: "subreddit"
+      query: """
+            select * from "subreddit" where "topic" = $1
+      """
       configuration: "postgresql_config"
     )
   getVoteList: [Vote]
@@ -103,7 +105,6 @@ type Mutation {
   insertPost(
     image: String!
     body: String!
-    created_at: DateTime!
     subreddit_id: ID!
     title: String!
     username: String!
@@ -115,6 +116,22 @@ type Mutation {
       dml: INSERT
       configuration: "postgresql_config"
     )
+
+  """
+  add the method to add subreddit by topic name
+  """
+  insertSubreddit(
+    topic: String!
+  ): Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+
+
   """
   In this mutation example you can see how to do a mutation to delete data from the database.
   """
