@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/outline";
 import {signIn, signOut, useSession} from "next-auth/react";
 
-function HeaderComponent() {
+const HeaderComponent: React.FC = () => {
 
   // because all the application in next-auth SessionProvider, we can use useSession
   const {data: session} = useSession()
