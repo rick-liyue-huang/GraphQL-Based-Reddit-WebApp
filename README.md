@@ -41,6 +41,14 @@ the form will use 'react-hook-form' library
 using `npm install react-hot-toast` to display the toaster after 
 
 
+'@heroicons/react' used to add icons
+
+
+tailwind notice: lg: xl: to modify the style by different screen size
+
+
+
+
 
 
 

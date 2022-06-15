@@ -1,101 +1,65 @@
 import React from 'react';
 import Image from 'next/image';
-import {ChevronDownIcon, HomeIcon, SearchIcon} from "@heroicons/react/solid";
 import {
-	BellIcon,
-	ChatIcon,
-	GlobeIcon, MenuIcon,
-	PlusIcon,
-	SparklesIcon,
-	SpeakerphoneIcon,
-	VideoCameraIcon
+  ChatIcon,
+  ChevronDownIcon,
+  GlobeIcon,
+  HomeIcon, MenuIcon, PlusIcon,
+  SearchIcon,
+  SparklesIcon, SpeakerphoneIcon,
+  VideoCameraIcon
 } from "@heroicons/react/outline";
-// connect with next-auth
-import {signIn, signOut, useSession} from "next-auth/react";
 
+function HeaderComponent() {
+  return (
+    <div className={'flex bg-white px-4 py-2 shadow-sm sticky top-0 z-10'}>
+      {/* logo */}
+      <div className={'relative w-20 h-10 flex-shrink-0'}>
+        <Image
+          src={'/images/redditlogo.png'} layout={'fill'} objectFit={'contain'}
+        />
+      </div>
 
-const HeaderComponent = () => {
+      {/* home menu */}
+      <div className={'flex items-center mx-6 lg:text-green-400 xl:min-w-[300px]'}>
+        <HomeIcon className={'w-5 h-5'} />
+        <p className={'flex-1 ml-2 hidden lg:inline'}>Home</p>
+        <ChevronDownIcon className={'w-5 h-5'} />
+      </div>
 
-	// will get the session after login
-	const {data: session} = useSession();
+      {/* search input  */}
+      <form
+        className={'flex flex-1 items-center bg-gray-50 px-2 py-1 border border-gray-300 space-x-2 rounded-sm'}
+      >
+        <SearchIcon className={'w-6 h-6 text-green-400'} />
+        <input type="text" placeholder={'search content...'} className={'flex-1 bg-transparent outline-none'} />
+        <button hidden type={'submit'} />
+      </form>
 
-	return (
-		<div
-			className={'flex bg-white px-4 py-2 shadow-sm sticky top-0'}>
-			{/* Logo */}
-			<div
-				className={'relative w-20 h-10 flex-shrink-0 cursor-pointer'}
-			>
-				<Image
-					src={'/images/redditlogo.png'} layout={'fill'} objectFit={'contain'}
-				/>
-			</div>
-			{/* Home Menu */}
-			<div
-				className={'flex items-center mx-7 xl:min-w-[300px]'}>
-				<HomeIcon className={'w-5 h-5 text-green-600'} />
-				<p className={'flex-1 ml-2 hidden lg:inline'}>Home</p>
-				<ChevronDownIcon className={'w-5 h-5'} />
-			</div>
+      {/* auth part */}
+      <div className={'flex text-gray-600 space-x-2 items-center mx-2 hidden lg:inline-flex'}>
+        <SparklesIcon className={'icon'} />
+        <GlobeIcon className={'icon'} />
+        <VideoCameraIcon className={'icon'} />
+        <hr className={'h-10 border border-green-200'}/>
+        <ChatIcon className={'icon'} />
+        <PlusIcon className={'icon'} />
+        <SpeakerphoneIcon className={'icon'} />
+      </div>
+      <div className={'flex text-gray-600 space-x-2 items-center ml-2 lg:hidden'}>
+        <MenuIcon className={'icon'} />
+      </div>
 
-		{/*	SearchInput */}
-			<form
-				className={'flex flex-1 items-center space-x-2 border border-green-200 rounded-sm bg-gray-100 px-1 py-1'}
-			>
-				<SearchIcon className={'w-6 h-6 text-gray-500'} />
-				<input className={'flex-1 bg-transparent outline-none'} type="text" placeholder={'Search content..'}/>
-				<button type={'submit'} hidden></button>
-			</form>
-			{/* Icons part */}
-			<div
-				className={'flex text-green-400 items-center space-x-2 hidden lg:inline-flex'}
-			>
-				<SparklesIcon className={'icon'} />
-				<GlobeIcon className={'icon'} />
-				<VideoCameraIcon className={'icon'} />
-				<hr className={'h-10 border border-green-200'}/>
-				<ChatIcon className={'icon'} />
-				<BellIcon className={'icon'} />
-				<PlusIcon className={'icon'} />
-				<SpeakerphoneIcon className={'icon'} />
-			</div>
-			<div className={'ml-5 text-green-400 flex items-center lg:hidden'}
-			>
-				<MenuIcon className={'icon'} />
-			</div>
+      {/*  */}
+      <div className={'flex items-center hidden lg:flex space-x-2 border border-gray-100'}>
+        <div className={'relative w-8 h-8 flex-shrink-0'}>
+          <Image src={'/images/redditFace.svg'} layout={'fill'} objectFit={'contain'} />
+        </div>
+        <p className={'text-green-400'}>Login</p>
+      </div>
 
-		{/* Auth button part	*/}
+    </div>
+  )
+}
 
-			{
-				session ? (
-					<div
-						className={'hidden items-center lg:flex space-x-2 p-2 cursor-pointer'}
-						onClick={() => signOut()}
-					>
-						<div className={'relative w-5 h-5 flex-shrink-0'}>
-							<Image src={'/images/redditFace.svg'} alt="login logo" layout={'fill'} objectFit={'contain'} />
-						</div>
-						<div className={'flex-1 text-xs'}>
-							<p className={'truncate text-green-500'}>{session.user?.name}</p>
-							<p className={'text-green-400'}>1 Karma</p>
-						</div>
-						<ChevronDownIcon className={'text-green-500 h-5 flex-shrink-0'} />
-					</div>
-				) : (
-					<div
-						className={'hidden items-center lg:flex space-x-2 p-2 cursor-pointer'}
-						onClick={() => signIn()}
-					>
-						<div className={'relative w-5 h-5 flex-shrink-0'}>
-							<Image src={'/images/redditFace.svg'} alt="login logo" layout={'fill'} objectFit={'contain'} />
-						</div>
-						<p className={'text-green-400'}>Login</p>
-					</div>
-				)
-			}
-
-		</div>
-	);
-};
-
-export default HeaderComponent;
+export default HeaderComponent
