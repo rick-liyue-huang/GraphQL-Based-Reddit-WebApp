@@ -9,8 +9,13 @@ import {
   SparklesIcon, SpeakerphoneIcon,
   VideoCameraIcon
 } from "@heroicons/react/outline";
+import {signIn, signOut, useSession} from "next-auth/react";
 
 function HeaderComponent() {
+
+  // because all the application in next-auth SessionProvider, we can use useSession
+  const {data: session} = useSession()
+
   return (
     <div className={'flex bg-white px-4 py-2 shadow-sm sticky top-0 z-10'}>
       {/* logo */}
@@ -50,13 +55,35 @@ function HeaderComponent() {
         <MenuIcon className={'icon'} />
       </div>
 
-      {/*  */}
-      <div className={'flex items-center hidden lg:flex space-x-2 border border-gray-100'}>
-        <div className={'relative w-8 h-8 flex-shrink-0'}>
-          <Image src={'/images/redditFace.svg'} layout={'fill'} objectFit={'contain'} />
-        </div>
-        <p className={'text-green-400'}>Login</p>
-      </div>
+      {/* deal with login and logout */}
+      {
+        session ? (
+          <div
+            className={'flex items-center hidden lg:flex space-x-2 cursor-pointer'}
+            onClick={() => signOut()}
+          >
+            <div className={'relative w-8 h-8 flex-shrink-0'}>
+              <Image src={'/images/redditFace.svg'} layout={'fill'} objectFit={'contain'} />
+            </div>
+            <div className={'flex-1 text-sm'}>
+              <p className={'text-green-400'}>{session.user?.name}</p>
+              <p className={'text-green-400'}>1 Karma</p>
+            </div>
+            <ChevronDownIcon className={'h-5 flex-shrink-0 text-gray-300 text-green-400'} />
+          </div>
+        ) : (
+          <div
+            className={'flex items-center hidden lg:flex space-x-2 cursor-pointer'}
+            onClick={() => signIn()}
+          >
+           {/* <div className={'relative w-8 h-8 flex-shrink-0'}>
+              <Image src={'/images/redditFace.svg'} layout={'fill'} objectFit={'contain'} />
+            </div>*/}
+            <p className={'text-green-400'}>Login</p>
+          </div>
+        )
+      }
+
 
     </div>
   )
