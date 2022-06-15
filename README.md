@@ -19,21 +19,26 @@ create project in 'https://app.supabase.com' to creat the Postgres Database used
 'Supabase' is the alternative for 'firebase'.
 
 here I will crete four tables: 
-1.Post: ID, title, body, subreddit_id, image, username
-2.Comment: ID, text, username, post_id
+1. Post: ID, title, body, subreddit_id, image, username
+2. Comment: ID, text, username, post_id
 3. SubReddit: ID, topic
 4. Vote: ID, username, post_id, upvote
 
 
 deal with the stepzen
-`npm install -g stepzen` to install it in project
-and login followed by the instruments
-and then create directory 'stepzen' and run `stepzen init` to create endpoint.
+1. `npm install -g stepzen` to install it in project,
+2. login followed by the instruments, `stepzen login`, all info can get from the login page,
+3. create 'stepzen-config', and `cd stepzen-config`, run `stepzen init` to create 'stepzen' endpoint
+and login followed by the instruments, `stepzen login`,
+4. run `stepzen import postgresql` to connect supabase 'Connection info' with stepzen,
+5. run `stepzen start` to deploy the endpoint to stepzen website and provide one graphql control webpage,
+6. in development stage, have to open two terminals, run `stepzen start` under 'stepzen-config' and `npm run dev` under root.
 
-Because the project is based on Postgresql, so run `stepzen import postgresql` under 'stepzen' dir, and follow the rules matching the info in supabase project. 
-and then `stepzen start`
+GraphQL solves the problems of over-fetching and under-fetching.
 
-notice: in the project development stage, needs to open three ports: 1. under main to run `npm run dev`, 2.under 'stepzen' to run `stepzen start` to open stepzen port, 3.used to install package
+The project using GraphQL from stepzen, so It will been wrapped in GraphQL client provider.
+I will create file named 'apollo-client.js' to set apolloClient configuration.
+
 
 
 create avatar in 'https://avatars.dicebear.com'

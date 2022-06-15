@@ -1,10 +1,12 @@
 import type { NextPage } from 'next'
-import HeaderComponent from '../components/Header'
-
+import Head from "next/Head";
 
 const Home: NextPage = () => {
   return (
     <div>
+      <Head>
+        <title>GraphQL based Reddit Webapp</title>
+      </Head>
       index
     </div>
   )
