@@ -10,6 +10,7 @@ import {
   VideoCameraIcon
 } from "@heroicons/react/outline";
 import {signIn, signOut, useSession} from "next-auth/react";
+import Link from 'next/link';
 
 const HeaderComponent: React.FC = () => {
 
@@ -19,10 +20,13 @@ const HeaderComponent: React.FC = () => {
   return (
     <div className={'flex bg-white px-4 py-2 shadow-sm sticky top-0 z-10 shadow-sm'}>
       {/* logo */}
-      <div className={'relative w-20 h-10 flex-shrink-0'}>
-        <Image
-          src={'/images/redditlogo.png'} layout={'fill'} objectFit={'contain'}
-        />
+      <div className={'relative w-20 h-10 flex-shrink-0 cursor-pointer'}>
+        <Link href={'/'}>
+          <Image
+            src={'/images/redditlogo.png'} layout={'fill'} objectFit={'contain'}
+          />
+        </Link>
+
       </div>
 
       {/* home menu */}

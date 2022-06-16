@@ -58,6 +58,9 @@ tailwind notice: lg: xl: to modify the style by different screen size.
 the default xxx.graphql files need to add additional funcs to match the application
 
 
+run `npm i @uiball/loaders` to deal with single post.id page
+
+
 
 
 
