@@ -94,7 +94,21 @@ type Query {
       table: "vote"
       configuration: "postgresql_config"
     )
+
+
+#   add additonal query
+  getSubredditListByTopic(topic: String!): [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      configuration: "postgresql_config"
+      query: """
+      select * from "subreddit" where "topic" = $1
+      """
+    )
 }
+
+
 
 type Mutation {
   """
@@ -103,7 +117,7 @@ type Mutation {
   insertPost(
     image: String!
     body: String!
-    created_at: DateTime!
+#    created_at: DateTime!
     subreddit_id: ID!
     title: String!
     username: String!
@@ -132,6 +146,20 @@ type Mutation {
       schema: "public"
       table: "post"
       dml: DELETE
+      configuration: "postgresql_config"
+    )
+
+
+#  additional mutations
+
+  insertSubreddit(
+    topic: String!
+  ) : Subreddit
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subreddit"
+      dml: INSERT
       configuration: "postgresql_config"
     )
 }

@@ -52,7 +52,11 @@ using `npm install react-hot-toast` to display the toaster after
 '@heroicons/react' used to add icons
 
 
-tailwind notice: lg: xl: to modify the style by different screen size
+tailwind notice: lg: xl: to modify the style by different screen size.
+
+
+the default xxx.graphql files need to add additional funcs to match the application
+
 
 
 

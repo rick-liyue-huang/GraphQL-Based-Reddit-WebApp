@@ -3,6 +3,11 @@ import {useSession} from "next-auth/react";
 import AvatarComponent from "./Avatar";
 import {LinkIcon, PhotographIcon} from "@heroicons/react/outline";
 import {useForm} from "react-hook-form";
+import {useMutation, useQuery} from "@apollo/client";
+import {ADD_POST, ADD_SUBREDDIT} from "../graphql/mutations";
+import apolloClient from "../apollo-client";
+import {GET_SUBREDDIT_BY_TOPIC} from "../graphql/queries";
+import {toast, useToaster} from "react-hot-toast";
 
 type FormData = {
 	postTitle: string,
@@ -24,8 +29,98 @@ const PostBoxComponent: React.FC = () => {
 
 	const [imageOpen, setImageOpen] = useState<boolean>(false);
 
+	// will use graphql mutation and query
+	const [addPost] = useMutation(ADD_POST);
+	const [addSubreddit] = useMutation(ADD_SUBREDDIT);
+	const {data: getSubredditListByTopic} = useQuery(GET_SUBREDDIT_BY_TOPIC)
+
 	const onSubmit = handleSubmit(async (formData) => {
 		console.log(formData);
+
+		// use the toaster
+		const notification = toast.loading('Creating New Post...');
+
+		try {
+
+		//	query for the subreddit topic
+			const {data: {getSubredditListByTopic}} = await apolloClient.query({
+				query: GET_SUBREDDIT_BY_TOPIC,
+				fetchPolicy: 'no-cache', // very important!!! prevent refresh page after submit form
+				variables: {
+					topic: formData.subreddit
+				}
+			});
+
+
+			// it means the community exists
+			const subRedditExisting = await getSubredditListByTopic.length > 0;
+
+			if (!subRedditExisting) {
+			//	create community
+				console.log(`community is new!!! ------`);
+				const {data: {insertSubreddit: newSubreddit} } = await addSubreddit({
+					variables: {
+						topic: formData.subreddit
+					}
+				});
+
+				console.log('creating post from formData: ', formData);
+				const image = formData.postImage || '';
+
+				const {data: {insertPost: newPost}} = await addPost({
+					variables: {
+						title: formData.postTitle,
+						body: formData.postBody,
+						image: image,
+						subreddit_id: newSubreddit.id,
+						username: session?.user?.name
+					}
+				});
+
+				console.log(`new post: ---- ${newPost} `);
+
+			} else {
+			//	using the existing community
+
+				console.log(`using the existing community`)
+				console.log(`getSubredditListByTopic: ${getSubredditListByTopic}`);
+
+				const image = formData.postImage || '';
+
+				const {data: {insertPost: newPost}} = await addPost({
+					variables: {
+						title: formData.postTitle,
+						body: formData.postBody,
+						image: image,
+						subreddit_id: getSubredditListByTopic[0].id,
+						username: session?.user?.name
+					}
+				});
+
+				console.log('new post: ', newPost)
+			}
+
+		//	after the post has been added, clear the input fields
+			setValue('postTitle', '');
+			setValue('postBody', '');
+			setValue('postImage', '');
+			setValue('subreddit', '');
+
+		//	get the toast again
+			toast.success('New Post Created...', {
+				id: notification
+			})
+
+			// location.reload();
+
+		} catch (err: any) {
+
+			console.log(err);
+			toast.error(`Something Is Wrong... ${err.message}`, {
+				id: notification
+			});
+		}
+
 	})
 
 	return (
@@ -51,7 +146,7 @@ const PostBoxComponent: React.FC = () => {
 
 
 			{
-				!!watch('postTitle') && (
+				(!!watch('postTitle')) && (
 					<div className={'flex flex-col py-1'}>
 						{/*	post body */}
 						<div className={'flex items-center px-1'}>
