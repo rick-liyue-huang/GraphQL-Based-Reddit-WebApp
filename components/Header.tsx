@@ -17,7 +17,7 @@ const HeaderComponent: React.FC = () => {
   const {data: session} = useSession()
 
   return (
-    <div className={'flex bg-white px-4 py-2 shadow-sm sticky top-0 z-10'}>
+    <div className={'flex bg-white px-4 py-2 shadow-sm sticky top-0 z-10 shadow-sm'}>
       {/* logo */}
       <div className={'relative w-20 h-10 flex-shrink-0'}>
         <Image

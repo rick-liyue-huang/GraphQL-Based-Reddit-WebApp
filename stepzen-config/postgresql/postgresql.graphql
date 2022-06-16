@@ -109,6 +109,10 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+
+
+
+
   getSubredditList: [Subreddit]
     @dbquery(
       type: "postgresql"
@@ -165,6 +169,20 @@ type Query {
       query: """
         select * from "comment" where "post_id" = $1 order by "created_at" desc
       """
+    )
+
+#   additional query
+  getPostListByTopic(topic: String!): [Post]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+        select *, "post".id as id from "public"."post"
+        join "subreddit" on "subreddit"."id" = "post"."subreddit_id"
+        where "subreddit"."topic" = $1
+        order by "post"."created_at" desc
+      """
+      configuration: "postgresql_config"
     )
 }
 

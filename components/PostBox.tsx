@@ -17,7 +17,11 @@ type FormData = {
 }
 
 
-const PostBoxComponent: React.FC = () => {
+interface PostBoxProps {
+	subreddit?: string
+}
+
+const PostBoxComponent: React.FC<PostBoxProps> = ({subreddit}) => {
 
 	// using next-auth to confirm the input info
 	const {data: session} = useSession();
@@ -56,7 +60,7 @@ const PostBoxComponent: React.FC = () => {
 				query: GET_SUBREDDIT_BY_TOPIC,
 				fetchPolicy: 'no-cache', // very important!!! prevent refresh page after submit form
 				variables: {
-					topic: formData.subreddit
+					topic: subreddit || formData.subreddit // add subreddit to filter the topic under /r/topic page
 				}
 			});
 
@@ -144,7 +148,12 @@ const PostBoxComponent: React.FC = () => {
 						...register('postTitle', {required: true})
 					}
 					type="text" disabled={!session} className={'flex-1 p-1 pl-5 outline-none rounded-md bg-blue-100'}
-					placeholder={session ? 'create post by inputting title...' : 'login firstly please'}
+					placeholder={
+					session ?
+						subreddit ?
+							`Create one post in r/${subreddit}` :
+							'create post by inputting title...' : 'login firstly please'
+				}
 				/>
 				<PhotographIcon
 					onClick={() => setImageOpen(!imageOpen)}
@@ -165,13 +174,18 @@ const PostBoxComponent: React.FC = () => {
 								{...register('postBody')} type="text" placeholder={'input optional post body...'}
 							/>
 						</div>
-						<div className={'flex items-center px-1'}>
-							<p className={'min-w-[90px] text-green-400'}>Community:</p>
-							<input
-								className={'flex-1 m-1 outline-none bg-purple-100'}
-								{...register('subreddit', {required: true})} type="text" placeholder={'input community name...'}
-							/>
-						</div>
+
+						{
+							!subreddit && (
+								<div className={'flex items-center px-1'}>
+									<p className={'min-w-[90px] text-green-400'}>Community:</p>
+									<input
+										className={'flex-1 m-1 outline-none bg-purple-100'}
+										{...register('subreddit', {required: true})} type="text" placeholder={'input community name...'}
+									/>
+								</div>
+							)
+						}
 
 						{
 							imageOpen && (
