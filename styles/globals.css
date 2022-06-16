@@ -13,4 +13,8 @@
 		@apply w-6 h-6 hover:bg-gray-200
  p-1 rounded-md
 	}
+
+	.postButton {
+		@apply flex items-center space-x-1 text-sm font-semibold p-2 hover:text-white hover:bg-green-200 cursor-pointer rounded-sm
+	}
 }

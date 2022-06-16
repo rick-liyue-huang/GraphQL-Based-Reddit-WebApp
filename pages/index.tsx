@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from "next/Head";
 import PostBoxComponent from "../components/PostBox";
+import FeedComponent from "../components/Feed";
 
 const Home: NextPage = () => {
   return (
@@ -10,8 +11,10 @@ const Home: NextPage = () => {
       </Head>
       {/* postBox */}
       <PostBoxComponent />
-      <div>
 
+      {/* feed */}
+      <div className={'flex'}>
+        <FeedComponent />
       </div>
     </div>
   )

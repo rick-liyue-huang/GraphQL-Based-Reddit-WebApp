@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 import {useMutation, useQuery} from "@apollo/client";
 import {ADD_POST, ADD_SUBREDDIT} from "../graphql/mutations";
 import apolloClient from "../apollo-client";
-import {GET_SUBREDDIT_BY_TOPIC} from "../graphql/queries";
+import {GET_ALL_POSTS, GET_SUBREDDIT_BY_TOPIC} from "../graphql/queries";
 import {toast, useToaster} from "react-hot-toast";
 
 type FormData = {
@@ -30,7 +30,16 @@ const PostBoxComponent: React.FC = () => {
 	const [imageOpen, setImageOpen] = useState<boolean>(false);
 
 	// will use graphql mutation and query
-	const [addPost] = useMutation(ADD_POST);
+	// also deal with the sync post list after add post
+	const [addPost] = useMutation(ADD_POST, {
+		refetchQueries: [
+			GET_ALL_POSTS,
+			'getPostList'
+		]
+	});
+
+
+
 	const [addSubreddit] = useMutation(ADD_SUBREDDIT);
 	const {data: getSubredditListByTopic} = useQuery(GET_SUBREDDIT_BY_TOPIC)
 
@@ -125,7 +134,7 @@ const PostBoxComponent: React.FC = () => {
 
 	return (
 		<form
-			className={'sticky top-16 z-20 rounded-md border border-gray-100 bg-white'}
+			className={'sticky top-16 z-20 rounded-md border border-gray-100 bg-white mb-2'}
 			onSubmit={onSubmit}
 		>
 			<div className={'flex items-center space-x-3'}>

@@ -1,5 +1,5 @@
 
-export type Comment = {
+export type CommentModel = {
 	created_at: string,
 	id: number,
 	post_id: number,
@@ -8,7 +8,7 @@ export type Comment = {
 };
 
 
-export type Vote = {
+export type VoteModel = {
 	created_at: string,
 	id: number,
 	post_id: number,
@@ -16,13 +16,13 @@ export type Vote = {
 	username: string
 };
 
-export type Subreddit = {
+export type SubredditModel = {
 	created_at: string,
 	id: number,
 	topic: string
 }
 
-export type Post = {
+export type PostModel = {
 	body: string,
 	created_at: string,
 	id: number,
@@ -32,7 +32,7 @@ export type Post = {
 	username: string,
 	votes: Vote[],
 	comments: Comment[],
-	subreddit: Subreddit[]
+	subreddits: Subreddit[]
 }
 
 

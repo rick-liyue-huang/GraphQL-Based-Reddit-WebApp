@@ -14,6 +14,25 @@ type Post {
   subreddit_id: ID
   title: String
   username: String
+
+#  add addition field, similar as (parent, args, context)
+  subreddits: [Subreddit]
+    @materializer(
+      query: "getSubredditListById",
+      arguments: [{name: "id", field: "subreddit_id"}]
+    )
+
+  votes: [Vote]
+    @materializer(
+      query: "getVotesByPostId",
+      arguments: [{name: "post_id", field: "id"}]
+    )
+
+  comments: [Comment]
+    @materializer(
+      query: "getCommentsByPostId",
+      arguments: [{name: "post_id", field: "id"}]
+    )
 }
 
 type Subreddit {
@@ -73,11 +92,21 @@ type Query {
       """
       configuration: "postgresql_config"
     )
+
+#  modify
   getPostList: [Post]
     @dbquery(
       type: "postgresql"
       schema: "public"
-      table: "post"
+#      table: "post"
+#      optional add: select *, "post".id as id from "public"."post"
+      #        join "subreddit" on "subreddit"."id" = "post"."subreddit_id"
+      #        order by "post"."created_at" desc
+
+      query: """
+        select * from "public"."post"
+        order by "post"."created_at" desc
+      """
       configuration: "postgresql_config"
     )
   getSubredditList: [Subreddit]
@@ -103,7 +132,38 @@ type Query {
       schema: "public"
       configuration: "postgresql_config"
       query: """
-      select * from "subreddit" where "topic" = $1
+        select * from "subreddit" where "topic" = $1
+      """
+    )
+
+#   used to deal with materializer
+  getSubredditListById(id: ID!): [Subreddit]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      configuration: "postgresql_config"
+      query: """
+        select * from "subreddit" where "id" = $1
+      """
+    )
+
+  getVotesByPostId(post_id: ID!): [Vote]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      configuration: "postgresql_config"
+      query: """
+        select * from "vote" where "post_id" = $1 order by "created_at" desc
+      """
+    )
+
+  getCommentsByPostId(post_id: ID!): [Comment]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      configuration: "postgresql_config"
+      query: """
+        select * from "comment" where "post_id" = $1 order by "created_at" desc
       """
     )
 }
